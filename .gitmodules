@@ -1,0 +1,3 @@
+[submodule "posgen"]
+	path = posgen
+	url = git@bitbucket.org:varvara/posgen.git
