@@ -6,6 +6,7 @@ import subprocess
 import sys
 import os
 import numpy as np
+from collections import defaultdict
 
 WORKFILEIN = "/var/www/echus.co/public_html/posgenjs/posgen/temp/run.xml"
 WORKFILEOUT = "/var/www/echus.co/public_html/posgenjs/posgen/temp/run.out"
@@ -79,7 +80,14 @@ def points():
     print >> sys.stderr, "Points loaded with np.loadtxt(): ", points
 
     # Serialize
-    responsedict = {k:list(points[:,i]) for k, i in zip(["x","y","z","mass"], range(4))}
+    # Old responsedict, organised by x/y/z/mass with no heirarchy
+    #responsedict = {k:list(points[:,i]) for k, i in zip(["x","y","z","mass"], range(4))}
+
+    # Return json organising points by mass
+    responsedict = defaultdict(list)
+    for pt in points:
+        responsedict[str(pt[3])].append(list(pt[:3]))
+
     print >> sys.stderr, "Response dict: ", responsedict
     response = jsonify(**responsedict)
 
