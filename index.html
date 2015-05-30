@@ -21,22 +21,19 @@
         <div class="container">
             <div class="row text-center">
                 <h1>posgen<span class="text-primary">js</span></h1>
+                <p>(with apologies to <a href="http://apttools.sourceforge.net/about.html">APTTools</a>)</p>
             </div>
 
             <div class="row text-left top-buffer">
-                <div id="results" class="col-xs-6">
-                    <div id="plot" class="col-xs-12">
-                    </div> <!-- plot -->
-                </div> <!-- results -->
 
-                <div id="control" class="col-xs-6"> 
+                <div id="control" class="col-xs-12 col-md-4"> 
                     <form id="params" class="form-horizontal">
                         <div id="paramsLattice" class="form-group">
                             <label class="col-xs-3 control-label">Lattice type</label>
                             <div class="col-xs-9">
-                                <select name="lattice" class="form-control">
-                                  <option value="fcc">FCC</option>
-                                  <option value="bcc">BCC</option>
+                                <select name="lattice" id="selectLattice" class="form-control">
+                                  <option value="fcc">Face-centered cubic</option>
+                                  <!--<option value="bcc">BCC</option>-->
                                   <option value="cubic">Simple cubic</option>
                                 </select>
                             </div> <!-- col-xs-9 -->
@@ -57,48 +54,51 @@
 
                         <div id="paramsSpacing" class="form-group">
                             <label class="col-xs-3 control-label">Spacing</label>
-                            <div class="col-xs-3">
+                            <div class="col-xs-9">
                                 <input type="number" name="spacing" class="form-control" id="spacing" placeholder="Atomic spacing">
                             </div>
                         </div>
 
                         <div id="paramsMass">
                             <div class="form-group">
-                                <label class="col-xs-3 control-label">(000)</label>
+                                <label class="col-xs-3 control-label">(000) mass</label>
                                 <div class="col-xs-3">
                                     <input type="number" name="000" class="form-control" id="mass000" placeholder="Mass">
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-xs-3 control-label">(202)</label>
+                                
+                                <div id="hideCubic">
+                                <label class="col-xs-3 control-label">(202) mass</label>
                                 <div class="col-xs-3">
                                     <input type="number" name="202" class="form-control" id="mass202" placeholder="Mass">
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="col-xs-3 control-label">(220)</label>
+                                <label class="col-xs-3 control-label">(220) mass</label>
                                 <div class="col-xs-3">
                                     <input type="number" name="220" class="form-control" id="mass220" placeholder="Mass">
                                 </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="col-xs-3 control-label">(022)</label>
+
+                                <label class="col-xs-3 control-label">(022) mass</label>
                                 <div class="col-xs-3">
                                     <input type="number" name="022" class="form-control" id="mass022" placeholder="Mass">
                                 </div>
+                            </div> <!-- hideCubic div -->
                             </div>
+
                         </div> <!-- div #paramsMass -->
 
                         <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9">
+                            <div class="col-xs-offset-3 col-xs-9">
                                 <button id="plotButton" type="button" class="btn btn-primary">Plot</button>
                             </div>
                         </div>
                     </form>
                 </div> <!-- control -->
+
+                <div id="results" class="col-xs-12 col-md-8">
+                    <div id="plot" class="col-xs-12">
+                    </div> <!-- plot -->
+                </div> <!-- results -->
+
             </div> <!-- row -->
         </div>
     </body>

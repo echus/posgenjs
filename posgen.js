@@ -10,6 +10,8 @@ var posgen = {
                                        );
 
         $("#plotButton").on("click", posgen.run);
+
+        $("#selectLattice").on("change", posgen.handleForm);
     },
 
     run: function(event) {
@@ -30,14 +32,14 @@ var posgen = {
 
 
     //
-    // Function functions
+    // Function functions (I promise my other comments are better)
     // 
     plotUpdate: function(points, request) {
         console.log("plotUpdate: Received returned points");
         console.log(points);
         
         // Hack to deal with Highcharts' lack of a real updateable zAxis. 
-        // To update z axis size must destroy chart and recreate appropriately 
+        // Destroys previously drawn chart and recreates appropriately 
         // sized one. 
         //
         // For speed, data initialisation should really be done in the chart
@@ -69,8 +71,8 @@ var posgen = {
     posgenCall: function(request, onDone, onFail) {
         // Generate points as per request params
         //
-        // Input:
-        // ------
+        // Arguments:
+        // ----------
         // request: JAppropriately structured request object for posgen/api
         // done: callback on success, passed returned data and request object
         // fail: callback on failure, passed returned data and request object
@@ -96,8 +98,8 @@ var posgen = {
         // Parses form to appropriate request object for passing to posgen backend
         // Displays error if form incomplete or outside value bounds
         // 
-        // Input:
-        // ------
+        // Arguments:
+        // ----------
         // fail: Parse failure callback
         //
         // Returns:
@@ -111,7 +113,11 @@ var posgen = {
         var $paramsLattice = $("#paramsLattice :input");
         var $paramsSpacing = $("#paramsSpacing :input");
         var $paramsBounds = $("#paramsBounds :input");
-        var $paramsMass = $("#paramsMass :input");
+        // Don't serialize empty fields in mass
+        var $paramsMass = $("#paramsMass :input").filter(
+                function(index, element) {
+                    return $(element).val() != "";
+                });
 
         var lattice = {};
         $paramsLattice.serializeArray().map(function(x){lattice[x.name] = x.value;}); 
@@ -137,6 +143,18 @@ var posgen = {
 
 
 
+    handleForm: function() {
+        if ($(this).val() === "fcc") {
+            $("#hideCubic").show();
+        } else if ($(this).val() === "cubic") {
+            $("#hideCubic").hide();
+            // Clear any values in hidden fields
+            $("#hideCubic").find(":input").val("");
+        }
+    },
+
+
+
     // 
     // Failure functions
     //
@@ -151,14 +169,14 @@ var posgen = {
     },
 
 
+
     // 
     // Convenience functions
     //
     paramsCheck: function(params) {
-        // Check all required request elements are present and corrent
+        // Check all required request elements are present and correct
         // 
-        // Input:
-        // ------
+        // ----------
         // params: Object representation of posgenapi json request to be sent
         //
         // Returns:
@@ -171,7 +189,7 @@ var posgen = {
     
 
     //
-    // Initialisation functions
+    // Highcharts
     // 
     plotSetup: function(container, title, subtitle, bounds, legend) {
         // Initialises plot in the supplied container
