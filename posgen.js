@@ -11,6 +11,7 @@ var posgen = {
 
         $("#buttonPlot").on("click", posgen.plot);
         $("#buttonExample").on("click", posgen.plotExample);
+        $("#buttonExport").on("click", posgen.posExport);
 
         $("#formLattice").on("change", posgen.handleForm);
     },
@@ -25,6 +26,7 @@ var posgen = {
 
         // Call posgen with parsed request
         posgen.posgenCall(request, 
+                          "api/points",
                           posgen.plotUpdate, 
                           posgen.backendFail
                          );
@@ -46,6 +48,18 @@ var posgen = {
         $("#form022").val("3");
 
         posgen.plot(event);
+    },
+
+    posExport: function(event) {
+        request = posgen.paramsToJSON(posgen.parseFail);
+        console.log("Parsed request json:");
+        console.log(request);
+
+        posgen.posgenCall(request, 
+                          "api/points/pos",
+                          posgen.showPOSURL, 
+                          posgen.backendFail
+                         );
     },
 
 
@@ -84,7 +98,16 @@ var posgen = {
         }
     },
 
-    posgenCall: function(request, onDone, onFail) {
+    showPOSURL: function(url, request) {
+        $("#alertInfo").show();
+        info = $("#info");
+        info.empty();
+        info.append("Points exported as POS! Download file <a href=\""+url.url+"\">here</a>.");
+        console.log("POS URL received:")
+        console.log(url)
+    },
+
+    posgenCall: function(request, endpoint, onDone, onFail) {
         // Generate points as per request params
         //
         // Arguments:
@@ -94,7 +117,7 @@ var posgen = {
         // fail: callback on failure, passed returned data and request object
         
         var jqxhr = $.ajax({
-            url: "api/points",
+            url: endpoint,
             type: "POST",
             data: JSON.stringify(request),
             contentType: "application/json; charset=utf-8",
