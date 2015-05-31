@@ -1,3 +1,24 @@
+body {
+    background-color: #fafafa;
+}
+
+.title {
+    font-size: 50px;
+}
+
+.results {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 60px 5px;
+}
+/*
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}*/
+
 .top-buffer { 
     margin-top:50px; 
 }

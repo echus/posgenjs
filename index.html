@@ -4,10 +4,11 @@
     <head>
         <title>posgen.js</title>
 
-        <!-- Bootstrap css -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/lumen/bootstrap.min.css" rel="stylesheet">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!-- Highcharts -->
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/highcharts-3d.js"></script>
@@ -20,11 +21,11 @@
     <body>
         <div class="container">
             <div class="row text-center">
-                <h1>posgen<span class="text-primary">js</span></h1>
+                <h1 class="title">posgen<span class="text-primary">js</span></h1>
                 <p>(with apologies to <a href="http://apttools.sourceforge.net/about.html">APTTools</a>)</p>
             </div>
 
-            <div class="row text-left top-buffer">
+            <div class="row row-eq-height text-left top-buffer">
 
                 <div id="control" class="col-xs-12 col-md-4"> 
                     <form id="params">
@@ -113,7 +114,7 @@
                     </form>
                 </div> <!-- control -->
 
-                <div id="results" class="col-xs-12 col-md-8">
+                <div id="results" class="results col-xs-12 col-md-8">
                     <div id="plot" class="col-xs-12">
                     </div> <!-- plot -->
                 </div> <!-- results -->
