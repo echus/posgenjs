@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, url_for
 from flask.ext.cors import CORS
 
 from lxml import etree
@@ -10,7 +10,12 @@ from collections import defaultdict
 
 WORKFILEIN = "/var/www/echus.co/public_html/posgenjs/posgen/temp/run.xml"
 WORKFILEOUT = "/var/www/echus.co/public_html/posgenjs/posgen/temp/run.out"
+
+POSFILE = "/var/www/echus.co/public_html/posgenjs/static/points.pos"
+POSURL = "static/points.pos"
+
 POSGEN =  "/var/www/echus.co/public_html/posgenjs/posgen/posgen"
+
 DOCTYPE = '<!DOCTYPE posscript SYSTEM "posscript.dtd">'
 
 app = Flask(__name__)
@@ -21,6 +26,26 @@ app.debug = True
 @app.route("/points", methods=['POST'])
 def points():
     query = request.get_json(force=True)
+
+    points = posgen(query)
+    print >> sys.stderr, "Response dict: ", points
+
+    response = jsonify(**points)
+
+    return response
+
+@app.route("/points/pos", methods=['POST'])
+def pointspos():
+    query = request.get_json(force=True)
+
+    url = posgen(query, pos=True)
+    print >> sys.stderr, "Response dict (pos): ", url
+
+    response = jsonify(**url)
+
+    return response
+
+def posgen(query, pos=False):
     lattice = query['lattice']
     x = query['bounds']['x']
     y = query['bounds']['y']
@@ -69,30 +94,34 @@ def points():
     except subprocess.CalledProcessError as inst:
         print >> sys.stderr, "Exception!"
         print >> sys.stderr, inst.output
-        pass
+        # TODO Handle error in API function, return appropriate status code
+        return None
 
-    # Write posgen point output to file
-    with open(WORKFILEOUT, 'w') as f:
-        subprocess.call([POSGEN, "-text", WORKFILEIN], stdout=f)
+    if not pos:
+        # Output as text, return points dict
+        # Write posgen point output to file
+        with open(WORKFILEOUT, 'w') as f:
+            subprocess.call([POSGEN, "-text", WORKFILEIN], stdout=f)
 
-    # Parse resulting text points
-    points = np.loadtxt(WORKFILEOUT)
-    print >> sys.stderr, "Points loaded with np.loadtxt(): ", points
+        # Parse resulting text points
+        points = np.loadtxt(WORKFILEOUT)
+        print >> sys.stderr, "Points loaded with np.loadtxt(): ", points
 
-    # Serialize
-    # Old responsedict, organised by x/y/z/mass with no heirarchy
-    #responsedict = {k:list(points[:,i]) for k, i in zip(["x","y","z","mass"], range(4))}
+        # Serialize
+        # Return json organising points by mass
+        responsedict = defaultdict(list)
+        for pt in points:
+            responsedict[str(pt[3])].append(list(pt[:3]))
 
-    # Return json organising points by mass
-    responsedict = defaultdict(list)
-    for pt in points:
-        responsedict[str(pt[3])].append(list(pt[:3]))
+        # Clean up workfiles
+        os.remove(WORKFILEIN)
+        os.remove(WORKFILEOUT)
+    else:
+        # Output as pos, return link to posfile
+        with open(POSFILE, 'w') as f:
+            subprocess.call([POSGEN, "-pos", WORKFILEIN], stdout=f)
 
-    print >> sys.stderr, "Response dict: ", responsedict
-    response = jsonify(**responsedict)
+        # Return link to posfile
+        responsedict = { "url":POSURL }
 
-    # Clean up workfiles
-    os.remove(WORKFILEIN)
-    os.remove(WORKFILEOUT)
-
-    return response
+    return responsedict
