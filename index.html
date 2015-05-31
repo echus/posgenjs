@@ -27,70 +27,83 @@
             <div class="row text-left top-buffer">
 
                 <div id="control" class="col-xs-12 col-md-4"> 
-                    <form id="params" class="form-horizontal">
+                    <form id="params">
+                        <div class="form-group">
+                            <button id="buttonPlot" type="button" class="btn btn-primary">Plot</button>
+                            <button id="buttonExample" type="button" class="btn btn-default">Sample plot</button>
+                            <button id="buttonExport" type="button" class="btn btn-default">Export to POS</button>
+                        </div>
+
                         <div id="paramsLattice" class="form-group">
-                            <label class="col-xs-3 control-label">Lattice type</label>
-                            <div class="col-xs-9">
-                                <select name="lattice" id="selectLattice" class="form-control">
+                            <label class="control-label">Lattice type</label>
+                            <div>
+                                <select name="lattice" id="formLattice" class="form-control">
                                   <option value="fcc">Face-centered cubic</option>
                                   <!--<option value="bcc">BCC</option>-->
                                   <option value="cubic">Simple cubic</option>
                                 </select>
-                            </div> <!-- col-xs-9 -->
+                            </div> 
                         </div> <!-- form-group -->
 
                         <div id="paramsBounds" class="form-group">
-                            <label class="col-xs-3 control-label">Bounds</label>
-                            <div class="col-xs-3">
-                                <input type="number" name="x" class="form-control" id="boundx" placeholder="x">
+                            <label class="control-label">Dataset boundary</label>
+                            <div> 
+                                <div class="input-group">
+                                    <input id="formX" type="number" name="x" class="form-control" id="boundx" placeholder="x bound">
+                                    <span class="input-group-addon">nm</span>
+                                </div>
                             </div>
-                            <div class="col-xs-3">
-                                <input type="number" name="y" class="form-control" id="boundy" placeholder="y">
+                            <div> 
+                                <div class="input-group">
+                                    <input id="formY" type="number" name="y" class="form-control" id="boundy" placeholder="y bound">
+                                    <span class="input-group-addon">nm</span>
+                                </div>
                             </div>
-                            <div class="col-xs-3">
-                                <input type="number" name="z" class="form-control" id="boundz" placeholder="z">
+                            <div> 
+                                <div class="input-group">
+                                    <input id="formZ" type="number" name="z" class="form-control" id="boundz" placeholder="z bound">
+                                    <span class="input-group-addon">nm</span>
+                                </div>
                             </div>
                         </div>
 
                         <div id="paramsSpacing" class="form-group">
-                            <label class="col-xs-3 control-label">Spacing</label>
-                            <div class="col-xs-9">
-                                <input type="number" name="spacing" class="form-control" id="spacing" placeholder="Atomic spacing">
+                            <label class="control-label">Lattice spacing</label>
+                            <div>
+                                <div class="input-group">
+                                    <input id="formSpacing" type="number" name="spacing" class="form-control" id="spacing" placeholder="Spacing">
+                                    <span class="input-group-addon">nm</span>
+                                </div>
                             </div>
                         </div>
 
                         <div id="paramsMass">
-                            <div class="form-group">
-                                <label class="col-xs-3 control-label">(000) mass</label>
-                                <div class="col-xs-3">
-                                    <input type="number" name="000" class="form-control" id="mass000" placeholder="Mass">
+                                <label class="control-label">Mass-to-charge ratios</label>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon">(000)</span>
+                                    <input id="form000" type="number" name="000" class="form-control" placeholder="Mass">
                                 </div>
                                 
                                 <div id="hideCubic">
-                                <label class="col-xs-3 control-label">(202) mass</label>
-                                <div class="col-xs-3">
-                                    <input type="number" name="202" class="form-control" id="mass202" placeholder="Mass">
-                                </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(202)</span>
+                                        <input id="form202" type="number" name="202" class="form-control" placeholder="Mass">
+                                    </div>
 
-                                <label class="col-xs-3 control-label">(220) mass</label>
-                                <div class="col-xs-3">
-                                    <input type="number" name="220" class="form-control" id="mass220" placeholder="Mass">
-                                </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(220)</span>
+                                        <input id="form220" type="number" name="220" class="form-control" placeholder="Mass">
+                                    </div>
 
-                                <label class="col-xs-3 control-label">(022) mass</label>
-                                <div class="col-xs-3">
-                                    <input type="number" name="022" class="form-control" id="mass022" placeholder="Mass">
-                                </div>
-                            </div> <!-- hideCubic div -->
-                            </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(022)</span>
+                                        <input id="form022" type="number" name="022" class="form-control" placeholder="Mass">
+                                    </div>
+                                </div> <!-- hideCubic div -->
 
                         </div> <!-- div #paramsMass -->
 
-                        <div class="form-group">
-                            <div class="col-xs-offset-3 col-xs-9">
-                                <button id="plotButton" type="button" class="btn btn-primary">Plot</button>
-                            </div>
-                        </div>
                     </form>
                 </div> <!-- control -->
 

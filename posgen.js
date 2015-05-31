@@ -2,19 +2,20 @@ var posgen = {
  
     onReady: function() {
         // Display empty chart on initialisation
-        posgen.plot = posgen.plotSetup("plot",
-                                       "Lattice", 
+        posgen.chart = posgen.plotSetup("plot",
+                                       "Preview", 
                                        "No data to show yet",
                                        [1, 1, 1],
                                        false
                                        );
 
-        $("#plotButton").on("click", posgen.run);
+        $("#buttonPlot").on("click", posgen.plot);
+        $("#buttonExample").on("click", posgen.plotExample);
 
-        $("#selectLattice").on("change", posgen.handleForm);
+        $("#formLattice").on("change", posgen.handleForm);
     },
 
-    run: function(event) {
+    plot: function(event) {
         // Main function, do everything!
 
         // Parse form into request json for posgen api
@@ -29,6 +30,23 @@ var posgen = {
                          );
     },
 
+    plotExample: function(event) {
+        $("#formLattice").val("fcc");
+        posgen.handleForm.call($("#formLattice"));
+
+        $("#formX").val("2");
+        $("#formY").val("2");
+        $("#formZ").val("2");
+
+        $("#formSpacing").val("0.5");
+
+        $("#form000").val("1");
+        $("#form202").val("1");
+        $("#form220").val("2");
+        $("#form022").val("3");
+
+        posgen.plot(event);
+    },
 
 
     //
@@ -44,9 +62,9 @@ var posgen = {
         //
         // For speed, data initialisation should really be done in the chart
         // constructor, but ain't no one got time for that.
-        posgen.plot.destroy();
-        posgen.plot = posgen.plotSetup("plot",
-                                       "Lattice", 
+        posgen.chart.destroy();
+        posgen.chart = posgen.plotSetup("plot",
+                                       "Preview", 
                                        "(click and drag to rotate view)",
                                        [request.bounds.x, 
                                         request.bounds.y, 
@@ -58,14 +76,12 @@ var posgen = {
         for (var mass in points) {
             if (points.hasOwnProperty(mass)) {
                 // Plot each element as separate series
-                posgen.plot.addSeries({
+                posgen.chart.addSeries({
                     name: mass,
                     data: points[mass]
                 });
             }
         }
-
-        posgen.plot.setTitle({text: "Lattice"}, {text: "(click and drag to rotate view)"});
     },
 
     posgenCall: function(request, onDone, onFail) {
@@ -106,7 +122,7 @@ var posgen = {
         // --------
         // Success: Parsed form contents in posgen/api object form 
         //          (NOT stringified)
-        // Error:   undefined
+        // Error:   null
 
         // TODO: var $error = $("#formError");
 
@@ -135,7 +151,7 @@ var posgen = {
         // Ensure all required fields are filled
         if (posgen.paramsCheck(params) === false) {
             onFail();
-            return undefined;
+            return null;
         } else {
             return params;
         }
